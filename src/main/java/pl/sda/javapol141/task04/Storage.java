@@ -1,12 +1,9 @@
 package pl.sda.javapol141.task04;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Storage {
-    private final Map<String, List<String>> map;
+    private final Map<String, Collection<String>> map;
 
     public Storage() {
         map = new HashMap<>();
@@ -14,8 +11,7 @@ public class Storage {
 
     public void addToStorage(String key, String value){
         map.putIfAbsent(key, new ArrayList<>());
-        List<String> names = map.get(key);
-        names.add(value);
+        map.get(key).add(value);
     }
 
     /**
@@ -23,10 +19,20 @@ public class Storage {
      * @param key
      */
     public void printValues(String key){
-        List<String> list = map.get(key);
+        Collection<String> list = map.get(key);
         if (list == null){
             return;
         }
         System.out.println(list.stream().sorted().toList());
+    }
+
+    public void findValues(String value){
+        List<String> keys = new ArrayList<>();
+        for(var entry: map.entrySet()){
+            if (entry.getValue().contains(value)){
+                keys.add(entry.getKey());
+            }
+        }
+        System.out.println(keys);
     }
 }

@@ -6,6 +6,7 @@ public class SwitchDemo {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while(true){
+            System.out.println("Div");
             System.out.println("Add");
             System.out.println("Dodaj");
             System.out.println("Sub");

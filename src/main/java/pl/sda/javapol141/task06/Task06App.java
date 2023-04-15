@@ -38,4 +38,11 @@ public class Task06App {
         System.out.println(treeMap.firstEntry());
         System.out.println(treeMap.lastEntry());
     }
+
+    // 2, 6 ,7 ,8 ,3, 4, 9
+    // 2, 3, 4, 6, 7, 8, 9
+    //       4
+    //     3   7
+    //   2   6   8
+    //              9
 }

@@ -1,7 +1,10 @@
 package pl.sda.javapol141.task06;
 
+import pl.sda.javapol141.task01.Book;
 import pl.sda.javapol141.task01.Point;
 
+import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,6 +22,16 @@ public class Task06App {
         points.put(new Point(2, 1), 34.5);
         // wywołaj metodę printEntries dla points
         printEntries(points);
+        TreeMap<Book, Long> books = new TreeMap<>((a, b) -> a.getCopies() - b.getCopies());
+        books.putIfAbsent(Book.builder().copies(3).build(), 6L);
+        books.putIfAbsent(Book.builder().copies(9).build(), 16L);
+        books.putIfAbsent(Book.builder().copies(2).build(), 65L);
+        printEntries(books);
+        TreeMap<LocalDate, String> calendar = new TreeMap<>((a, b) -> b.compareTo(a));
+        calendar.put(LocalDate.of(2023, 4, 20), "Urodziny");
+        calendar.put(LocalDate.of(2023, 4, 17), "Zakupy");
+        calendar.put(LocalDate.of(2023, 4, 25), "Wyjazd");
+        printEntries(calendar);
     }
 
     public static void printEntries(TreeMap<?,?> treeMap){

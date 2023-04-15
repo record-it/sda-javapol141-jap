@@ -39,9 +39,16 @@ public class BookApp {
         );
         books.sort((a, b) -> a.getTitle().compareTo(b.getTitle()));
         // posortuj książki wg autorów - Zadanie 1
-
+        books.sort((a, b) -> a.getAuthor().compareTo(b.getAuthor()));
         // posortuj książki wg roku edycji - Zadanie 2
-
-        System.out.println(books);
+        books.sort((a, b) -> {
+            if (Integer.compare(a.getEditionYear(), b.getEditionYear()) == 0){
+                return Integer.compare(a.getCopies(), b.getCopies());
+            } else {
+                return Integer.compare(a.getEditionYear(), b.getEditionYear());
+            }
+        });
+        //System.out.println(books);
+        books.stream().sorted().forEach(System.out::println);
     }
 }

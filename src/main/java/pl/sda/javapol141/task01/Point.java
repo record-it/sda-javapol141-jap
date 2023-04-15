@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * Zadanie 3
  * Zdefiniuj metodę compareTo dla klasy Point
  * kolejność wg pola x a potem y
- * stworz przykładową aplikację z sortowaniem obiektów klasy Point
+ * stwórz przykładową aplikację z sortowaniem obiektów klasy Point
  */
 @Data
 @Builder

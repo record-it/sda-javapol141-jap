@@ -15,7 +15,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Point {
+public class Point implements Comparable<Point>{
     private double x;
     private double y;
+
+    @Override
+    public int compareTo(Point o) {
+        return x == o.x ? Double.compare(y, o.y): Double.compare(x, o.x);
+    }
 }

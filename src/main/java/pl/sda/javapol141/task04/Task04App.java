@@ -8,6 +8,8 @@ public class Task04App {
         storage.addToStorage("Ewa", "Nowak");
         storage.addToStorage("Ala", "Abecka");
         storage.printValues("Adam");
+        storage.findValues("Nowak");
+        storage.findValues("aaa");
     }
 
 }

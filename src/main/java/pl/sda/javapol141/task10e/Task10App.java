@@ -5,12 +5,14 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.transform.Transform;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,7 +26,13 @@ public class Task10App extends Application {
 
     Ball ball;
     List<Ball> balls = new ArrayList<>();
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+    String letter = "V";
+    int points;
+
+    Text info = new Text("Liczba punktów: 0");
+    ScheduledExecutorService animationExecutor = Executors.newSingleThreadScheduledExecutor();
+    ScheduledExecutorService timerExecutor = Executors.newSingleThreadScheduledExecutor();
 
     public static void main(String[] args) {
         launch(args);
@@ -39,16 +47,38 @@ public class Task10App extends Application {
                 IntStream
                         .range(0, 50)
                         .mapToObj(i -> Ball.random(scene.getWidth(), scene.getHeight()))
+                        .peek(ball -> ball.setOnMouseClicked(this::handleBall))
                         .toList()
         );
+        info.setLayoutX(10);
+        info.setLayoutY(20);
         root.getChildren().addAll(balls);
+        root.getChildren().add(info);
         stage.setScene(scene);
         stage.setTitle("Bouncing ball");
         stage.setResizable(false);
         stage.show();
-        stage.setOnCloseRequest(e -> executor.shutdown());
-        executor.scheduleAtFixedRate(this::animateBalls, 0, 20, TimeUnit.MILLISECONDS);
+        stage.setOnCloseRequest(e -> animationExecutor.shutdown());
+        animationExecutor.scheduleAtFixedRate(this::animateBalls, 0, 20, TimeUnit.MILLISECONDS);
         scene.setOnKeyPressed(this::handleKeys);
+    }
+
+    public void handleBall(MouseEvent event){
+        Object source =  event.getSource();
+        if (!(source instanceof Ball)){
+            return;
+        }
+        Ball ball = (Ball) source;
+        String text = ball.getText().getText();
+        if (Objects.equals(text, letter)){
+            points++;
+            info.setText("Liczba punktów: " + points);
+            timerExecutor.schedule(() -> {
+                animationExecutor.shutdown();
+                timerExecutor.shutdown();
+                Platform.exit();
+            }, 5, TimeUnit.SECONDS);
+        }
     }
 
     public void handleKeys(KeyEvent event) {
@@ -79,7 +109,6 @@ public class Task10App extends Application {
                 var texts = balls
                         .stream()
                         .map(b -> b.getText().getText())
-                        .distinct()
                         .sorted()
                         .toList();
                 System.out.println(texts);
@@ -90,9 +119,11 @@ public class Task10App extends Application {
                 Map<String, List<String>> letters = balls
                         .stream()
                         .map(b -> b.getText().getText())
+                        .map(String::toUpperCase)
                         .sorted()
                         .collect(Collectors.groupingBy(s -> s));
-                String word = "kalkulator";
+                System.out.println(letters);
+                String word = "kalkulator".toUpperCase();
                 Map<String, List<String>> wordLetters = word
                         .chars()
                         .mapToObj(c -> (char) (c) + "")
@@ -109,7 +140,7 @@ public class Task10App extends Application {
                 System.out.println("Czy słowo " + word +" składa się z litera w kulkach? " + isWord);
                 break;
             case Q:
-                executor.shutdown();
+                animationExecutor.shutdown();
                 Platform.exit();
         }
     }

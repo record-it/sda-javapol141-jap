@@ -13,4 +13,14 @@ public class MyCircle extends Circle {
                                 + (center.getY() - point.getY()) * (center.getY() - point.getY()))
         );
     }
+
+    public double getPerimeter(){
+        double radius = getRadius();
+        return 2 * Math.PI * radius;
+    }
+
+    public double getArea(){
+        double radius = getRadius();
+        return Math.PI * Math.pow(radius, 2);
+    }
 }

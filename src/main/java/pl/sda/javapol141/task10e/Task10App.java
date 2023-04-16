@@ -38,25 +38,29 @@ public class Task10App extends Application {
         stage.show();
         ball.setSpeedX(3);
         ball.setSpeedY(2);
-        executor.scheduleAtFixedRate(this::animateBall, 0, 20, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(this::animateBalls, 0, 20, TimeUnit.MILLISECONDS);
     }
 
-    public void animateBall(){
-        if (ball.getLayoutX() + ball.getWidth() > scene.getWidth()) {
-            ball.setSpeedX(-ball.getSpeedX());
+    public void animateBalls(){
+        balls.forEach(this::animateBall);
+    }
+
+    public void animateBall(Ball currentBall){
+        if (currentBall.getLayoutX() + currentBall.getWidth() > scene.getWidth()) {
+            currentBall.setSpeedX(-currentBall.getSpeedX());
         }
-        if(ball.getLayoutX() < 0){
-            ball.setSpeedX(-ball.getSpeedX());
+        if(currentBall.getLayoutX() < 0){
+            currentBall.setSpeedX(-currentBall.getSpeedX());
         }
-        if (ball.getLayoutY() + ball.getHeight() > scene.getHeight()) {
-            ball.setSpeedY(-ball.getSpeedY());
+        if (currentBall.getLayoutY() + currentBall.getHeight() > scene.getHeight()) {
+            currentBall.setSpeedY(-currentBall.getSpeedY());
         }
-        if(ball.getLayoutY() < 0){
-            ball.setSpeedY(-ball.getSpeedY());
+        if(currentBall.getLayoutY() < 0){
+            currentBall.setSpeedY(-currentBall.getSpeedY());
         }
         Platform.runLater(() -> {
             //ball.getTransforms().add(Transform.translate(1, 0));
-            ball.move();
+            currentBall.move();
         });
 
 

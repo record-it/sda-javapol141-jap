@@ -5,4 +5,5 @@ module jap {
     requires java.net.http;
     requires lombok;
     exports pl.sda.javapol141.task09;
+    exports pl.sda.javapol141.task10e;
 }

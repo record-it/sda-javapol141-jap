@@ -10,7 +10,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.Random;
+
 public class Ball extends StackPane {
+    private static final Random random = new Random();
     private Circle circle;
 
     private Text text;
@@ -39,6 +42,38 @@ public class Ball extends StackPane {
         this.text.setFont(Font.font("Arial", 18));
         this.getChildren().addAll(this.circle, this.text);
         this.setAlignment(Pos.CENTER);
+    }
+
+    public Ball(double radius, String content, Color color){
+        circle = new Circle(0,0, radius);
+        speedX = 1;
+        speedY = 1;
+        RadialGradient gradient = new RadialGradient(
+                0,
+                .1,
+                0,
+                0,
+                radius,
+                false,
+                CycleMethod.NO_CYCLE,
+                new Stop(0, Color.WHITESMOKE),
+                new Stop(1, color)
+        );
+        circle.setFill(gradient);
+        this.text = new Text(getLayoutX(), getLayoutY(), content);
+        this.text.setFont(Font.font("Arial", 18));
+        this.getChildren().addAll(this.circle, this.text);
+        this.setAlignment(Pos.CENTER);
+    }
+    public static Ball random(double width, double height){
+        String randomText = ((char) (65 + random.nextInt(25))) + "";
+        Color color = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        var ball = new Ball(10 + random.nextInt(30), randomText, color);
+        ball.setSpeedX(1 + random.nextDouble(6));
+        ball.setSpeedY(1 + random.nextDouble(6));
+        ball.setLayoutX(random.nextDouble(width));
+        ball.setLayoutY(random.nextDouble(height));
+        return ball;
     }
 
     public double getSpeedX() {

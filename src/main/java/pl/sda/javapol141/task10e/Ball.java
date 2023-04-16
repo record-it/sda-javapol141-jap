@@ -96,4 +96,12 @@ public class Ball extends StackPane {
         this.setLayoutX(this.getLayoutX() + speedX);
         this.setLayoutY(this.getLayoutY() + speedY);
     }
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public Text getText() {
+        return text;
+    }
 }

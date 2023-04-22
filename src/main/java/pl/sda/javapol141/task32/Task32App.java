@@ -8,7 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import pl.sda.javapol141.task01.Book;
 import pl.sda.javapol141.task01.Point;
 
@@ -82,7 +84,22 @@ public class Task32App extends Application {
         pane.setAlignment(Pos.CENTER);
 
         booksView = new ListView<>();
-        booksView.setMinWidth(400);
+        booksView.setCellFactory(new Callback<ListView<Book>, ListCell<Book>>() {
+            @Override
+            public ListCell<Book> call(ListView<Book> bookListView) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(Book book, boolean b) {
+                        super.updateItem(book, b);
+                        if (book != null){
+                            setText(book.toString());
+                            setFont(Font.font("Courier New", 14));
+                        }
+                    }
+                };
+            }
+        });
+        booksView.setMinWidth(500);
         pane.add(booksView, 0, 7, 2, 1);
         booksView.getItems().add(Book
                 .builder()
@@ -95,7 +112,18 @@ public class Task32App extends Application {
     }
 
     private void setClickAddBookBtn(MouseEvent event){
-
+        final int editionYear = Integer.parseInt(bookEditionYear.getText());
+        final int copies = Integer.parseInt(bookCopies.getText());
+        final String author = bookAuthor.getText();
+        final String title = bookTitle.getText();
+        Book book = Book
+                .builder()
+                .title(title)
+                .author(author)
+                .copies(copies)
+                .editionYear(editionYear)
+                .build();
+        booksView.getItems().add(book);
     }
 
     private void setClickSaveBooksBtn(MouseEvent event){

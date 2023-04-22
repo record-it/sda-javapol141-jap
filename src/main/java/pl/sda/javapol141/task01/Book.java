@@ -40,6 +40,6 @@ public class Book implements Comparable<Book>{
 
     @Override
     public String toString() {
-        return String.format("%-40s %-40s %4d %2d", title, author, editionYear, copies);
+        return String.format("%-20s %-20s %4d %2d", title, author, editionYear, copies);
     }
 }

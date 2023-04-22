@@ -3,6 +3,7 @@ package pl.sda.javapol141.task30;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
@@ -40,6 +41,7 @@ public class Task30App extends Application {
         pane.setVgap(10);
         pane.setHgap(10);
         pane.setPadding(new Insets(10));
+        //TODO zadeklaruj oba przyciski jako pola klasy
         var loadBtn = new Button("Load ...");
         loadBtn.setMinWidth(120);
         loadBtn.setOnMouseClicked(this::setOnClickLoadBtn);
@@ -47,6 +49,7 @@ public class Task30App extends Application {
         var saveBtn = new Button("Save reversed ...");
         saveBtn.setMinWidth(120);
         saveBtn.setOnMouseClicked(this::setOnClickSaveBtn);
+        saveBtn.setDisable(true);
         pane.add(saveBtn,1, 0);
         area = new TextArea("zawartość pliku ...");
         area.setMinWidth(250);
@@ -55,6 +58,7 @@ public class Task30App extends Application {
     }
 
     private void setOnClickLoadBtn(MouseEvent event){
+        //TODO odblokuj przycisk saveBtn jeśli użytkownik wskazał poprawny plik
         FileChooser chooser = new FileChooser();
         final File file = chooser.showOpenDialog(stage);
         if (file == null){
@@ -76,6 +80,29 @@ public class Task30App extends Application {
     }
 
     private void setOnClickSaveBtn(MouseEvent event){
+        String content = area.getText();
+        //odwrócić łańcuch content
+        content = reverse(content);
+        //zapisać do pliku o odwróconej nazwy
+        final String fileName = sourceFile.getFileName().toString();
+        final int i = fileName.lastIndexOf(".");
+        final String ext = fileName.substring(i + 1);
+        final String fileNameWithoutExtension = fileName.substring(0, i);
+        String reversedFilename = reverse(fileNameWithoutExtension) + "." + ext;
+        System.out.println(sourceFile.getParent());
+        // c:\data
+        // /users/path
+        final Path targetPath = Path.of(sourceFile.getParent().toString(), reversedFilename);
+        // zapisz content do pliku o nazwie reversedFilename
+        try {
+            Files.writeString(targetPath, content);
+        } catch (IOException e) {
+            //TODO wywoła alert z iformacją dla użytkownika
+            throw new RuntimeException(e);
+        }
+    }
 
+    private String reverse(String str){
+        return new StringBuilder(str).reverse().toString();
     }
 }

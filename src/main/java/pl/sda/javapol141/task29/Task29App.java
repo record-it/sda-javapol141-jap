@@ -1,6 +1,5 @@
 package pl.sda.javapol141.task29;
 
-import java.lang.reflect.Array;
 import java.util.function.Predicate;
 
 public class Task29App {

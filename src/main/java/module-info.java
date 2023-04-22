@@ -7,4 +7,5 @@ module jap {
     exports pl.sda.javapol141.task09;
     exports pl.sda.javapol141.task10e;
     exports pl.sda.javapol141.task30;
+    exports pl.sda.javapol141.task32;
 }

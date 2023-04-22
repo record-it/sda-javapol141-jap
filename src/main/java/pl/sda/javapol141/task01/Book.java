@@ -36,6 +36,10 @@ public class Book implements Comparable<Book>{
         } else {
             return title.compareToIgnoreCase(o.title);
         }
+    }
 
+    @Override
+    public String toString() {
+        return String.format("%-40s %-40s %4d %2d", title, author, editionYear, copies);
     }
 }

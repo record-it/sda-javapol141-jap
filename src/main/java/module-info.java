@@ -6,4 +6,5 @@ module jap {
     requires lombok;
     exports pl.sda.javapol141.task09;
     exports pl.sda.javapol141.task10e;
+    exports pl.sda.javapol141.task30;
 }

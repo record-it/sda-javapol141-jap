@@ -48,4 +48,12 @@ public class Basket<T> {
        }
        return sb.toString();
     }
+
+    public boolean isEmpty(){
+        return last < 0;
+    }
+
+    public boolean isFull(){
+        return last >= 9;
+    }
 }

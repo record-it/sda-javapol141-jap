@@ -23,7 +23,6 @@ import java.util.stream.IntStream;
 public class Task10App extends Application {
     Group root;
     Scene scene;
-
     Ball ball;
     List<Ball> balls = new ArrayList<>();
 
@@ -87,7 +86,7 @@ public class Task10App extends Application {
                 // zadanie 1
                 // usunąć kulki o promieniu większym od 30
                 // stwórz listę kulek do usunięcia - removed
-                // usuń obiektu w kolekcji balls, które są w removed
+                // usuń obiekty w kolekcji balls, które są w removed
                 List<Ball> removed = balls.stream().filter(b -> b.getCircle().getRadius() > 30).toList();
                 balls.removeAll(removed);
                 root.getChildren().removeAll(removed);
@@ -116,12 +115,12 @@ public class Task10App extends Application {
             case C:
                 // Zdanie 3
                 // czy można ułożyć słowo z liter w kulkach np. kalkulator
-                Map<String, List<String>> letters = balls
+                Map<String, Long> letters = balls
                         .stream()
                         .map(b -> b.getText().getText())
                         .map(String::toUpperCase)
                         .sorted()
-                        .collect(Collectors.groupingBy(s -> s));
+                        .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
                 System.out.println(letters);
                 String word = "kalkulator".toUpperCase();
                 Map<String, List<String>> wordLetters = word
@@ -132,7 +131,7 @@ public class Task10App extends Application {
                 for (var letter : wordLetters.entrySet()) {
                     if (
                             !letters.containsKey(letter.getKey()) ||
-                                    letter.getValue().size() > letters.get(letter.getKey()).size()) {
+                                    letter.getValue().size() > letters.get(letter)) {
                             isWord = false;
                             break;
                     }

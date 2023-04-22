@@ -1,4 +1,4 @@
-package pl.sda.javapol141.task10e;
+ package pl.sda.javapol141.task10e;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;

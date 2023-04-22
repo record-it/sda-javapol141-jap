@@ -9,13 +9,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import pl.sda.javapol141.task01.Book;
 import pl.sda.javapol141.task01.Point;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Task32App extends Application {
     Stage stage;
@@ -127,6 +134,28 @@ public class Task32App extends Application {
     }
 
     private void setClickSaveBooksBtn(MouseEvent event){
+        FileChooser chooser = new FileChooser();
+        final File file = chooser.showSaveDialog(stage);
+        if (file == null){
+            return;
+        }
+        // zapisz zawartość kolekcji w booksView do pliku file
+        Path path = Paths.get(file.getAbsolutePath());
+        try {
+            Files.writeString(path,
+                    booksView
+                            .getItems()
+                            .stream()
+                            .map(book -> book.toString())
+                            .collect(Collectors.joining(System.lineSeparator()
+                            )));
+        } catch (IOException e) {
+            System.err.println(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Zapis do pliku nie powiódł się!");
+            alert.show();
+        }
+
 
     }
 

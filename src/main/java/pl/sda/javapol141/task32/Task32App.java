@@ -13,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import pl.sda.javapol141.task01.Book;
-import pl.sda.javapol141.task01.Point;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Task32App extends Application {
@@ -33,7 +33,6 @@ public class Task32App extends Application {
     TextField bookEditionYear;
     TextField bookCopies;
     ListView<Book> booksView;
-    List<Book> books = new ArrayList<>();
     public static void main(String[] args) {
         launch(args);
     }
@@ -146,21 +145,71 @@ public class Task32App extends Application {
                     booksView
                             .getItems()
                             .stream()
-                            .map(book -> book.toString())
+                            .map(book -> book.getTitle() + "\t"+ book.getAuthor() + "\t" + book.getEditionYear() + "\t" + book.getCopies())
                             .collect(Collectors.joining(System.lineSeparator()
                             )));
         } catch (IOException e) {
-            System.err.println(e);
+            System.err.println(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Zapis do pliku nie powiódł się!");
             alert.show();
         }
+    }
 
-
+    //TODO uzupełnij funkcję formatującą i wstają ją jako referencję do metody w wierszu 149, metoda map
+    private String formatBook(Book book){
+        return null;
     }
 
     private void setClickLoadBooksBtn(MouseEvent event){
+        FileChooser chooser = new FileChooser();
+        final File file = chooser.showOpenDialog(stage);
+        if (file == null){
+            return;
+        }
+        Path path = Paths.get(file.getAbsolutePath());
+        try {
+            final List<Book> books = Files.lines(path)
+                    .map(line -> {
+                        line = line.replace("\t", "\n");
+                        Scanner scanner = new Scanner(line);
+                        String title = "";
+                        String author = "";
+                        int editionYear = 0;
+                        int copies = 0;
+                        if (scanner.hasNextLine()) {
+                            title = scanner.nextLine();
+                        } else {
+                            return null;
+                        }
+                        if (scanner.hasNextLine()) {
+                            author = scanner.nextLine();
+                        } else {
+                            return null;
+                        }
+                        if (scanner.hasNextInt()) {
+                            editionYear = scanner.nextInt();
+                        } else {
+                            return null;
+                        }
+                        if (scanner.hasNextInt()) {
+                            copies = scanner.nextInt();
+                        }
+                        return Book
+                                .builder()
+                                .title(title)
+                                .author(author)
+                                .copies(copies)
+                                .editionYear(editionYear)
+                                .build();
 
+                    })
+                    .toList();
+            booksView.getItems().clear();
+            booksView.getItems().addAll(books);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
